@@ -47,7 +47,6 @@ module YuiEditor
       yui_scripts = %w{element/element container/container_core}
       yui_scripts += %w{menu/menu button/button} unless editor_class == 'SimpleEditor'
       yui_scripts << 'editor/editor'
-      yui_scripts << 'connection/connection'
       yui_scripts += additional_yui_javascripts
       yui_scripts.each do |script|
         result << javascript_include_tag("#{base_uri}/#{version}/build/#{script}#{compression}.js") + "\n"
