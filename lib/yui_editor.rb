@@ -64,7 +64,7 @@ YAHOO.util.Event.onDOMReady(function(){
     var textArea = textAreas[i];
     if (new YAHOO.util.Element(textArea).hasClass('#{editor_selector}')) {
       var editor = new YAHOO.widget.#{editor_class}(textArea.id,#{options[:editor_config_javascript] || '{}'});
-      #{callbacks};
+      #{callbacks}
       editor.render();
     }
   }
