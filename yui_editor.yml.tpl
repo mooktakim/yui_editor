@@ -2,7 +2,10 @@ version: '2.7.0'
 selector: rich_text_editor
 simple_editor: false
 body_class: yui-skin-sam
-editor_extension_callbacks: "// MyExtension.install(editor);"
+editor_extension_callbacks: "
+yuiImgUploader(editor, '/upload_url','param_name');
+// MyExtension.install(editor);
+"
 javascript_base_uri: //yui.yahooapis.com
 editor_extension_javascripts:
   - yui-image-uploader.js
