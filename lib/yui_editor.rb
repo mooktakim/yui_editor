@@ -54,8 +54,6 @@ module YuiEditor
       (options[:editor_extension_javascripts] || []).each do |js|
         result << javascript_include_tag(js) + "\n"
       end
-      
-      result << javascript_include_tag('yui-image-uploader') + "\n"
 
       js = <<JAVASCRIPT
 YAHOO.util.Event.onDOMReady(function(){
@@ -67,7 +65,6 @@ YAHOO.util.Event.onDOMReady(function(){
     if (new YAHOO.util.Element(textArea).hasClass('#{editor_selector}')) {
       var editor = new YAHOO.widget.#{editor_class}(textArea.id,#{options[:editor_config_javascript] || '{}'});
       #{callbacks};
-      yuiImgUploader(editor, '/upload_url','param_name');
       editor.render();
     }
   }
