@@ -24,7 +24,6 @@ new.html.erb:
 blogs.html.erb:
 
 <head>
-  <script language="Javascript">function getAuthKey() { return "<%= form_authenticity_token %>"; }</script>
   <%= include_yui_editor_if_used %>
 </head>
 

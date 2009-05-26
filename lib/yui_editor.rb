@@ -56,6 +56,9 @@ module YuiEditor
       end
 
       js = <<JAVASCRIPT
+function getAuthKey() {
+  return "#{form_authenticity_token}";
+}
 YAHOO.util.Event.onDOMReady(function(){
   new YAHOO.util.Element(document.getElementsByTagName('body')[0]).addClass('#{body_class}');
   
