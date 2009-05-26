@@ -2,6 +2,7 @@ YuiEditor
 =========
 
 Integrate the Yahoo Rich Text Editor (http://developer.yahoo.com/yui/editor/) into a Rails application.
+Integration of file uploads through the text editor. It can be used with whatever upload plugin for rails. But, i will describe how to make it work with Paparclip below.
 
 Example
 =======
@@ -23,12 +24,41 @@ new.html.erb:
 blogs.html.erb:
 
 <head>
+  <script language="Javascript">function getAuthKey() { return "<%= form_authenticity_token %>"; }</script>
   <%= include_yui_editor_if_used %>
 </head>
+
+Simple method for upload controller:
+
+Add this method to your paperclip upload image controller
+
+  def yui_upload
+    @uploaded_image = UploadedImage.new(params[:uploaded_image])
+
+    respond_to do |format|
+      if @uploaded_image.save
+        format.html do
+          render :text => "{status:'UPLOADED',image_url:'#{@uploaded_image.file.url}',large_image_url:'#{@uploaded_image.file.url(:large)}'}", :layout => false
+        end
+      else
+        format.html do
+          render :text => "{status:'Upload was unsuccessful.'}", :layout => false
+        end
+      end
+    end
+  end
+
+decide on the image sizes you would like to return. In this case, i'm return the default image size for display "image_url", and :large size for url link "large_image_url"
+
 
 # Customizing the configuration
 
 default settings are in RAILS_ROOT/config/yui_editor.yml.
+
+Edit the following line for the correct url for image uploads:
+yuiImgUploader(editor, textArea.id, '/uploaded_images/yui_upload','uploaded_image[file]');
+In the above example i have a controller called UploadedImages and a method yui_upload.
+Also, its important to have the correct field name: uploaded_image[file]
 
 you can override the editor defaults in each controller:
 

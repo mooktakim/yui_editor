@@ -3,7 +3,7 @@ selector: rich_text_editor
 simple_editor: false
 body_class: yui-skin-sam
 editor_extension_callbacks: "
-  yuiImgUploader(editor, '/upload_url','param_name');
+  yuiImgUploader(editor, textArea.id, '/uploaded_images/yui_upload','uploaded_image[file]');
   // MyExtension.install(editor);
 "
 javascript_base_uri: //yui.yahooapis.com
@@ -15,8 +15,10 @@ additional_yui_javascripts:
   - connection/connection
 editor_config_javascript: "
 {
+  animate: true,
+  focusAtStart: false,
   handleSubmit: true,
-  autoHeight: false,
+  autoHeight: true,
   dompath: false,
   collapse: true
 }"

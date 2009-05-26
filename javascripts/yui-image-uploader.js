@@ -42,38 +42,42 @@ function yuiImgUploader(rte, editor_name, upload_url, upload_image_name) {
 
             if (! Dom.get(editor_name + '_insertimage_upload'))
             {
-              var label=document.createElement('label');
-              label.innerHTML='<strong>Upload:</strong>'+
+              var form = document.createElement('form');
+              form.innerHTML='<label><strong>Upload:</strong>'+
               '<input type="file" id="' +
               editor_name + '_insertimage_upload" name="'+upload_image_name+
-              '" size="10" style="width: 300px" />'+
-              '</label>';
+              '" size="20" />'+
+              '<input type="hidden" name="authenticity_token" value="' + getAuthKey() + '" />'+
+              '</label></form>';
 
               var img_elem=Dom.get(editor_name + '_insertimage_url');
-              Dom.getAncestorByTagName(img_elem, 'form').encoding = 'multipart/form-data';
+              form.encoding = 'multipart/form-data';
 
-              Dom.insertAfter(
-                label,
+              Dom.insertBefore(
+                form,
                 img_elem.parentNode);
 
               YAHOO.util.Event.on ( editor_name + '_insertimage_upload', 'change', function(ev) {
                 YAHOO.util.Event.stopEvent(ev); // no default click action
-                YAHOO.util.Connect.setForm ( img_elem.form, true, true );
+                YAHOO.util.Connect.setForm ( form, true, true );
                 var c=YAHOO.util.Connect.asyncRequest(
                   'POST', upload_url, {
                     upload:function(r){
                       try {
                         // strip pre tags if they got added somehow
+						//alert(r.responseText)
                         resp=r.responseText.replace( /<pre>/i, '').replace ( /<\/pre>/i, '');
                         var o=eval('('+resp+')');
                         if (o.status=='UPLOADED') {
-                          Dom.get(editor_name + '_insertimage_upload').value='';
-                          Dom.get(editor_name + '_insertimage_url').value=o.image_url;
+                          Dom.get(editor_name + '_insertimage_upload').value = '';
+                          Dom.get(editor_name + '_insertimage_url').value = o.image_url;
+                          Dom.get(editor_name + '_insertimage_link').value = o.large_image_url;
                           // tell the image panel the url changed
                           // hack instead of fireEvent('blur')
                           // which for some reason isn't working
-                          Dom.get(editor_name + '_insertimage_url').focus();
                           Dom.get(editor_name + '_insertimage_upload').focus();
+                          Dom.get(editor_name + '_insertimage_link').focus();
+                          Dom.get(editor_name + '_insertimage_url').focus();
                         } else {
                           alert ( "Upload Failed: "+o.status );
                         }
